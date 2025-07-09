@@ -1,117 +1,109 @@
-// create table as iffy function
-const createTable = (function() {
-    const table = [];
 
-    for (let i = 0; i < 3; i++) {
-        table[i] = [];
-        for (let j = 0; j < 3; j++) {
-            table[i][j] = '-';
-        }
-    };
-
-    return {table};
-})();
-
+function outerGame () {
 // factory function to make two players 
+
 const createPlayer = function (name, sign) {
     return {name, sign}
 }
 
 
-// control the game
-const gameController = function () {
+    const playerOne = createPlayer(prompt('Name of player One: '), 'X');
+    const playerTwo = createPlayer(prompt('Name of player Two: '), 'O');
 
-    const checkInput = (input) => {
-        console.log(input);
-        if ((input == null) || (input.length !== 2)) {
-            console.log('Wrong input.')
-        } else {
-            const parsedInput= input.split('').map(element => parseInt(element));
-            if (parsedInput.includes(NaN)) {
-                console.log('Wrong input.')
-            } else {
-                const [row, column] = parsedInput;
-                return [row, column]
+
+
+
+    const repeat = document.createElement('button');
+    repeat.textContent = 'REPEAT';
+    document.body.appendChild(repeat);
+
+    const board = document.querySelector('#board');
+    const announceWinnerEl = document.createElement('h1');
+    document.body.appendChild(announceWinnerEl);
+
+    function gameController() {
+        const boardElements = Array.from(board.childNodes).filter(element => element.nodeType == '1');
+        let currentPlayer = playerOne;
+
+        const switchPlayer = (player1, player2) => {
+            currentPlayer = currentPlayer == player1 ? player2 : player1;
+        }
+        const [
+            rowOneA, rowOneB, rowOneC,
+            rowTwoA, rowTwoB, rowTwoC,
+            rowThreeA, rowThreeB, rowThreeC
+        ] = boardElements;
+
+        boardElements.map(element => element.style.fontSize = '100px');
+
+        repeat.addEventListener('click', () => {
+            boardElements.map(element => element.textContent = '');
+            announceWinnerEl.textContent = '';
+            boardElements.forEach(element => element.addEventListener('click', handleClick));
+            board.style.display = 'grid';
+        });
+
+        const checkWinner = (r0c0El, r0c1El, r0c2El, r1c0El, r1c1El, r1c2El, r2c0El, r2c1El, r2c2El, player1, player2) => {
+
+            let winner;
+
+            const r0c0 = r0c0El.textContent;
+            const r0c1 = r0c1El.textContent;
+            const r0c2 = r0c2El.textContent;
+            const r1c0 = r1c0El.textContent;
+            const r1c1 = r1c1El.textContent;
+            const r1c2 = r1c2El.textContent;
+            const r2c0 = r2c0El.textContent;
+            const r2c1 = r2c1El.textContent;
+            const r2c2 = r2c2El.textContent;
+
+            if (
+                (r0c0== 'X' && r0c1== 'X' && r0c2== 'X') || 
+                (r1c0 == 'X' && r1c1 == 'X' && r1c2 == 'X') || 
+                (r2c0 == 'X' && r2c1 == 'X' && r2c2 == 'X') || 
+                (r0c0 == 'X' && r1c0 == 'X' && r2c0 == 'X') ||
+                (r0c1 == 'X' && r1c1 == 'X' && r2c1 == 'X') || 
+                (r0c2 == 'X' && r1c2 == 'X' && r2c2 == 'X') || 
+                (r0c0 == 'X' && r1c1 == 'X' && r2c2 == 'X') || 
+                (r0c2 == 'X' && r1c1 == 'X' && r2c0 == 'X')
+            ) {
+                winner = player1;
+                announceWinnerEl.textContent = `${winner.name} -> ${winner.sign} <- won!`
+                board.style.display = 'none';
+                boardElements.forEach(element => element.removeEventListener('click', handleClick));
+            } else if (
+                (r0c0 == 'O' && r0c1 == 'O' && r0c2 == 'O') || 
+                (r1c0 == 'O' && r1c1 == 'O' && r1c2 == 'O') || 
+                (r2c0 == 'O' && r2c1 == 'O' && r2c2 == 'O') || 
+                (r0c0 == 'O' && r1c0 == 'O' && r2c0 == 'O') ||
+                (r0c1 == 'O' && r1c1 == 'O' && r2c1 == 'O') || 
+                (r0c2 == 'O' && r1c2 == 'O' && r2c2 == 'O') || 
+                (r0c0 == 'O' && r1c1 == 'O' && r2c2 == 'O') || 
+                (r0c2 == 'O' && r1c1 == 'O' && r2c0 == 'O')
+            ) {
+                winner = player2;
+                announceWinnerEl.textContent = `${winner.name} -> ${winner.sign} <- won!`
+                board.style.display = 'none';
+                boardElements.forEach(element => element.removeEventListener('click', handleClick));
+            } else if (boardElements.every(element => element.textContent !== '')) {
+                announceWinnerEl.textContent = 'Draw!';
+                board.style.display = 'none';
+                boardElements.forEach(element => element.removeEventListener('click', handleClick));
             }
         }
-    }
 
-    const checkWinner = (table, player1, player2) => {
-        let winner;
-        if (
-            (table[0][0] == 'X' && table[0][1] == 'X' && table[0][2] == 'X') || 
-            (table[1][0] == 'X' && table[1][1] == 'X' && table[1][2] == 'X') || 
-            (table[2][0] == 'X' && table[2][1] == 'X' && table[2][2] == 'X') || 
-            (table[0][0] == 'X' && table[1][0] == 'X' && table[2][0] == 'X') ||
-            (table[0][1] == 'X' && table[1][1] == 'X' && table[2][1] == 'X') || 
-            (table[0][2] == 'X' && table[1][2] == 'X' && table[2][2] == 'X') || 
-            (table[0][0] == 'X' && table[1][1] == 'X' && table[2][2] == 'X') || 
-            (table[0][2] == 'X' && table[1][1] == 'X' && table[2][0] == 'X')
-        ) {
-            winner = player1;
-            isEnd = true;
-            console.log(`${winner.name} ${winner.sign} won!`);
-        } else if (
-            (table[0][0] == 'O' && table[0][1] == 'O' && table[0][2] == 'O') || 
-            (table[1][0] == 'O' && table[1][1] == 'O' && table[1][2] == 'O') || 
-            (table[2][0] == 'O' && table[2][1] == 'O' && table[2][2] == 'O') || 
-            (table[0][0] == 'O' && table[1][0] == 'O' && table[2][0] == 'O') || 
-            (table[0][1] == 'O' && table[1][1] == 'O' && table[2][1] == 'O') || 
-            (table[0][2] == 'O' && table[1][2] == 'O' && table[2][2] == 'O') || 
-            (table[0][0] == 'O' && table[1][1] == 'O' && table[2][2] == 'O') || 
-            (table[0][2] == 'O' && table[1][1] == 'O' && table[2][0] == 'O')
-        ) {
-            winner = player2;
-            isEnd = true;
-            console.log(`${winner.name} ${winner.sign} won!`);
-        } else if (history.length == 9) {
-            winner = 'Nobody';
-            isEnd = true;
-            console.log(`${winner.name} ${winner.sign} won!`);
-        }
-
-    }
-    
-    const switchPlayer = (player1, player2) => {
-        currentPlayer = currentPlayer == player1 ? player2 : player1;
-    }
-
-    // import table
-    const gameBoard = createTable.table;
-
-    // create players
-    const playerOne = createPlayer('Player One', 'X');
-    const playerTwo = createPlayer('Player Two', 'O');
-
-    const history = []
-
-    let isEnd = false;
-    let currentPlayer = playerOne;
-
-    while (!isEnd) {
-
-        const playerChoice = prompt(`Player ${currentPlayer.name} turn.`);
-
-        const returnedChoice = checkInput(playerChoice);
-
-        if (returnedChoice !== undefined) {
-            const [row, column] = returnedChoice;
-            if (gameBoard[row][column] == '-') {
-                gameBoard[row][column] = currentPlayer.sign;
-                history.push(currentPlayer.sign)
-            } else {
-                console.log(`This place is already full. row: ${row} column: ${column}`);
+        const handleClick = (e) => {
+            if (e.target.textContent == '') {
+                e.target.textContent = currentPlayer.sign;
+                switchPlayer(playerOne, playerTwo);
+                checkWinner(rowOneA, rowOneB, rowOneC, rowTwoA, rowTwoB, rowTwoC, rowThreeA, rowThreeB, rowThreeC, playerOne, playerTwo);
             }
-        } else {
-            isEnd = true;
         }
 
-
-        switchPlayer(playerOne, playerTwo);
-
-        checkWinner(gameBoard, playerOne, playerTwo);
-
-        console.log(gameBoard.map(row => row.map(element => element)))
+        boardElements.forEach(element => element.addEventListener('click', handleClick));
     }
+
+    gameController();
 }
-gameController();
+
+outerGame();

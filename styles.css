@@ -1,23 +1,51 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'Montserrat';
 }
+
 body {
     height: 100vh;
     display: grid;
     place-items: center;
+    background-color: rgb(200, 200, 224);
 }
-#game-board {
-    border: 1px solid blue;
+#board {
+    background-color: rgb(103, 103, 245);
     height: 500px; 
     width: 500px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 2px;
-    padding: 5px;
+    gap: 15px;
+    border-radius: 20px;
+    padding: 20px;
 }
 
-#game-board > div{
-    border: 1px solid blue;
+#board > div{
+    background-color: rgb(255, 140, 140);
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+}
+
+button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(255, 140, 140);
+    color: rgb(75, 73, 73);
+    font-weight: 550;
+    font-size: 1.5rem;
+    letter-spacing: 0.3rem;
+}
+
+button:hover {
+    background-color: rgb(147, 149, 218);
+}
+
+h1 {
+    font-size: 100px;
+    color: rgb(99, 99, 221);
+    padding: 30px;
 }
