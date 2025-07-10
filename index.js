@@ -1,5 +1,5 @@
 
-function outerGame () {
+const outerGame = (function (){
 // factory function to make two players 
 
 const createPlayer = function (name, sign) {
@@ -16,6 +16,7 @@ const createPlayer = function (name, sign) {
     const repeat = document.createElement('button');
     repeat.textContent = 'REPEAT';
     document.body.appendChild(repeat);
+    repeat.style.display = 'none';
 
     const board = document.querySelector('#board');
     const announceWinnerEl = document.createElement('h1');
@@ -41,6 +42,7 @@ const createPlayer = function (name, sign) {
             announceWinnerEl.textContent = '';
             boardElements.forEach(element => element.addEventListener('click', handleClick));
             board.style.display = 'grid';
+            repeat.style.display = 'none';
         });
 
         const checkWinner = (r0c0El, r0c1El, r0c2El, r1c0El, r1c1El, r1c2El, r2c0El, r2c1El, r2c2El, player1, player2) => {
@@ -70,6 +72,7 @@ const createPlayer = function (name, sign) {
                 winner = player1;
                 announceWinnerEl.textContent = `${winner.name} -> ${winner.sign} <- won!`
                 board.style.display = 'none';
+                repeat.style.display = 'block';
                 boardElements.forEach(element => element.removeEventListener('click', handleClick));
             } else if (
                 (r0c0 == 'O' && r0c1 == 'O' && r0c2 == 'O') || 
@@ -84,10 +87,12 @@ const createPlayer = function (name, sign) {
                 winner = player2;
                 announceWinnerEl.textContent = `${winner.name} -> ${winner.sign} <- won!`
                 board.style.display = 'none';
+                repeat.style.display = 'block';
                 boardElements.forEach(element => element.removeEventListener('click', handleClick));
             } else if (boardElements.every(element => element.textContent !== '')) {
                 announceWinnerEl.textContent = 'Draw!';
                 board.style.display = 'none';
+                repeat.style.display = 'block';
                 boardElements.forEach(element => element.removeEventListener('click', handleClick));
             }
         }
@@ -104,6 +109,4 @@ const createPlayer = function (name, sign) {
     }
 
     gameController();
-}
-
-outerGame();
+})();
