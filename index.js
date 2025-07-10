@@ -1,6 +1,4 @@
-
-const outerGame = (function (){
-// factory function to make two players 
+const outerGame = (function () {
 
     const createPlayer = (name, sign) => {
         return {name, sign}
@@ -8,8 +6,6 @@ const outerGame = (function (){
 
     const playerOne = createPlayer(prompt('Name of player One: '), 'X');
     const playerTwo = createPlayer(prompt('Name of player Two: '), 'O');
-
-
 
 
     const repeat = document.createElement('button');
@@ -21,8 +17,7 @@ const outerGame = (function (){
     const announceWinnerEl = document.createElement('h1');
     document.body.appendChild(announceWinnerEl);
 
-    // game logic
-    function gameController() {
+    function gameController () {
         const boardElements = Array.from(board.childNodes).filter(element => element.nodeType == '1');
         let currentPlayer = playerOne;
 
@@ -53,6 +48,7 @@ const outerGame = (function (){
         }
     );
 
+        // Refactor this is temporary code just to make game work.
         const checkWinner = (r0c0El, r0c1El, r0c2El, r1c0El, r1c1El, r1c2El, r2c0El, r2c1El, r2c2El, player1, player2) => {
 
             let winner;
@@ -68,7 +64,7 @@ const outerGame = (function (){
             const r2c2 = r2c2El.textContent;
 
             if (
-                (r0c0== 'X' && r0c1== 'X' && r0c2== 'X') || 
+                (r0c0 == 'X' && r0c1 == 'X' && r0c2 == 'X') || 
                 (r1c0 == 'X' && r1c1 == 'X' && r1c2 == 'X') || 
                 (r2c0 == 'X' && r2c1 == 'X' && r2c2 == 'X') || 
                 (r0c0 == 'X' && r1c0 == 'X' && r2c0 == 'X') ||
