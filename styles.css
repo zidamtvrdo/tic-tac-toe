@@ -29,6 +29,11 @@ body {
     place-items: center;
 }
 
+#board > div:active {
+    background-color: rgb(255, 160, 160);
+    border: 5px solid rgb(245, 101, 101);
+}
+
 button {
     padding: 10px;
     border-radius: 5px;
