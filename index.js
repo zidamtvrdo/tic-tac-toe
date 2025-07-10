@@ -29,6 +29,13 @@ const createPlayer = function (name, sign) {
         const switchPlayer = (player1, player2) => {
             currentPlayer = currentPlayer == player1 ? player2 : player1;
         }
+
+        const showAfterRound = () => {
+            board.style.display = 'none';
+            repeat.style.display = 'block';
+            boardElements.forEach(element => element.removeEventListener('click', handleClick));
+        }
+
         const [
             rowOneA, rowOneB, rowOneC,
             rowTwoA, rowTwoB, rowTwoC,
@@ -44,6 +51,8 @@ const createPlayer = function (name, sign) {
             board.style.display = 'grid';
             repeat.style.display = 'none';
         });
+
+
 
         const checkWinner = (r0c0El, r0c1El, r0c2El, r1c0El, r1c1El, r1c2El, r2c0El, r2c1El, r2c2El, player1, player2) => {
 
@@ -71,9 +80,7 @@ const createPlayer = function (name, sign) {
             ) {
                 winner = player1;
                 announceWinnerEl.textContent = `${winner.name} -> ${winner.sign} <- won!`
-                board.style.display = 'none';
-                repeat.style.display = 'block';
-                boardElements.forEach(element => element.removeEventListener('click', handleClick));
+                showAfterRound();
             } else if (
                 (r0c0 == 'O' && r0c1 == 'O' && r0c2 == 'O') || 
                 (r1c0 == 'O' && r1c1 == 'O' && r1c2 == 'O') || 
@@ -86,14 +93,10 @@ const createPlayer = function (name, sign) {
             ) {
                 winner = player2;
                 announceWinnerEl.textContent = `${winner.name} -> ${winner.sign} <- won!`
-                board.style.display = 'none';
-                repeat.style.display = 'block';
-                boardElements.forEach(element => element.removeEventListener('click', handleClick));
+                showAfterRound();
             } else if (boardElements.every(element => element.textContent !== '')) {
                 announceWinnerEl.textContent = 'Draw!';
-                board.style.display = 'none';
-                repeat.style.display = 'block';
-                boardElements.forEach(element => element.removeEventListener('click', handleClick));
+                showAfterRound();
             }
         }
 
